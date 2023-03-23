@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Card, Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Cart from "../components/Cart/Cart";
+import axios from "axios";
 
 import "./Products.css";
 import CartContext from "../components/store/cart-context";
+import AuthContext from "../components/store/auth-context";
 
 const productsArr = [
   {
@@ -43,22 +44,44 @@ const productsArr = [
   },
 ];
 
-const Products = () => {
-  const [show, setShow] = useState(false);
+const Products = (props) => {
   const cartCtx = useContext(CartContext);
-
-  const handleClose = () => setShow(false);
-
+  const authCtx = useContext(AuthContext);
+  const email = authCtx.email;
+  let emailid = ''
+  for(var i = 0;i< email.length; i++)
+  {
+    if(email[i] === '@')
+    {
+      continue;
+    }
+    if(email[i] === '.')
+    {
+      continue;
+    }
+    emailid = emailid + email[i]
+  }
+  
   const addToCartHandler = (prod) => {
+    console.log('Adding item', prod)
     cartCtx.addItem(prod);
+    // let obj =
+    // {
+    //   title: prod.title,
+    //   price: prod.price,
+    //   imageUrl: prod.imageUrl
+    // }
+    authCtx.addEmail(emailid);
+    // console.log(emailid)
+    axios.post(`https://crudcrud.com/api/475b7d50b2264b1c93408a61df2770a7/cart${emailid}`, prod).then((res) => {console.log(res)})
   };
   return (
     <React.Fragment>
-      <Cart show={show} handleClose={handleClose}></Cart>
+      {/* <Cart items={cartCtx.items} show={show} handleClose={handleClose}>{props.children}</Cart> */}
 
       {productsArr.map((prod) => (
         
-          <Container className="products">
+          <Container key={prod.title} className="products">
             <Card className="mt-3" style={{ width: "18rem" }}>
               <Card.Img variant="top" src={prod.imageUrl} />
               <Card.Body>
@@ -70,7 +93,9 @@ const Products = () => {
                 </Card.Subtitle>
                 <Card.Text>{prod.title}</Card.Text>
                 <Button
-                  onClick={() => addToCartHandler(prod)}
+                  onClick={() => {addToCartHandler(prod)
+                  }
+                }
                   variant="primary"
                 >
                   Add to Cart
@@ -78,6 +103,7 @@ const Products = () => {
               </Card.Body>
             </Card>
           </Container>
+          
         
       ))}
     </React.Fragment>

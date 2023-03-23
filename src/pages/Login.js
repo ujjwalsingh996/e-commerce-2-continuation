@@ -46,7 +46,7 @@ const Login = () => {
     event.preventDefault();
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
-    console.log(enteredEmail, enteredPassword);
+    // console.log(enteredEmail, enteredPassword);
      try {
       const response = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDCbHcNqtDAJHrL7U_2YgYvyOjHTc60FoA",
@@ -70,7 +70,9 @@ const Login = () => {
         let errorMessage = "Login Failed";
         throw new Error(errorMessage);
       }
-      authCtx.login(data.idToken)
+      // console.log(data.email)
+      authCtx.login(data.idToken, data.email)
+      
       history.replace('/')
     } catch (err) {
       console.log(err);

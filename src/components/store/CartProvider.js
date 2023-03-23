@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import CartContext from "./cart-context";
 
+
+
 const CartProvider = (props) => {
   const [items, setItems] = useState([]);
   const addItemtoCartHandler = (arr) => {

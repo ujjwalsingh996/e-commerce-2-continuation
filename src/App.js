@@ -9,19 +9,17 @@ import ProductDetail from "./pages/ProductDetail";
 import Login from "./pages/Login";
 import RootLayout from "./pages/Root";
 import AuthContext from "./components/store/auth-context";
+
 function App() {
   const authCtx = useContext(AuthContext);
   return (
     <CartProvider>
       <RootLayout>
         <Switch>
-          
-            <Route path="/" exact>
-            {authCtx.isLoggedIn && (<Products />)}
+          <Route path="/" exact>
+            {authCtx.isLoggedIn && <Products />}
             {!authCtx.isLoggedIn && <Redirect to="/login" />}
-            </Route>
-          
-          
+          </Route>
 
           <Route path="/about">
             <AboutUs />

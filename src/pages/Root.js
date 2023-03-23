@@ -22,7 +22,7 @@ const RootLayout = (props) => {
           </Button>
         </Container>
       </Navbar>
-      <Cart show={show} handleClose={handleClose}></Cart>
+      <Cart items={cartCtx.items} show={show} handleClose={handleClose}></Cart>
       {props.children}
     </React.Fragment>
   );
