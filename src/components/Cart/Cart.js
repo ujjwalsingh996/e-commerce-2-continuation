@@ -8,43 +8,45 @@ import axios from "axios";
 const Cart = (props) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // added loading state
+  
   const cartCtx = useContext(CartContext);
   const authCtx = useContext(AuthContext);
   const emailid = authCtx.emailid
   // const [emailid, setEmailid] = useState(authCtx.emailid);
   // const [updatePage, setUpdatePage] = useState(props.items);
   // console.log(props.items)
-
   const removeItemHandler = async(prod, title) => {
     cartCtx.removeItem(title);
     const res = await axios.delete(
-      `https://crudcrud.com/api/475b7d50b2264b1c93408a61df2770a7/cart${emailid}/${prod}`
+      `https://crudcrud.com/api/89ff5a1936e643c088a7b1157c2a10c2/cart${emailid}/${prod}`
     );
     console.log(res)
-    getData();
+    props.getData();
     // setUpdatePage(cartCtx.items);
   };  
+  const items = cartCtx.items
 
   const getData = useCallback(() => {
     setIsLoading(true);
     axios
       .get(
-        `https://crudcrud.com/api/475b7d50b2264b1c93408a61df2770a7/cart${emailid}`
+        `https://crudcrud.com/api/89ff5a1936e643c088a7b1157c2a10c2/cart${emailid}`
       )
       .then((res) => {
         setData(res.data);
         setIsLoading(false);
         console.log(res);
+        console.log(cartCtx.items)
       })
       .catch((error) => {
         console.log(error);
-        // setIsLoading(false);
+        setIsLoading(false);
       });
-  }, [emailid]);
+    }, [emailid, items ])
 
   useEffect(() => {
     getData();
-  }, [cartCtx.items, getData]);
+  }, [getData]);
 
 
   return (
@@ -54,9 +56,9 @@ const Cart = (props) => {
           <Offcanvas.Title>CART</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          {isLoading && <p>Loading...</p>}{" "}
-          {!isLoading &&
-            data.map((prod) => (
+          {props.isLoading && <p>Loading...</p>}{" "}
+          {!props.isLoading &&
+            props.data.map((prod) => (
               <Toast key={prod._id}>
                 <Toast.Body>
                   <img

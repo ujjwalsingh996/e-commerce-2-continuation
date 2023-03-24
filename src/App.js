@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Products from "./pages/Products";
-import CartProvider from "./components/store/CartProvider";
 import AboutUs from "./pages/AboutUs";
 import HomePage from "./pages/Home";
 import ContactUs from "./pages/ContactUs";
@@ -13,10 +12,9 @@ import AuthContext from "./components/store/auth-context";
 function App() {
   const authCtx = useContext(AuthContext);
   return (
-    <CartProvider>
       <RootLayout>
         <Switch>
-          <Route path="/" exact>
+          <Route path="/store" exact>
             {authCtx.isLoggedIn && <Products />}
             {!authCtx.isLoggedIn && <Redirect to="/login" />}
           </Route>
@@ -24,7 +22,7 @@ function App() {
           <Route path="/about">
             <AboutUs />
           </Route>
-          <Route path="/home">
+          <Route path="/" exact>
             <HomePage></HomePage>
           </Route>
 
@@ -34,12 +32,14 @@ function App() {
           <Route path="/contact">
             <ContactUs></ContactUs>
           </Route>
-          <Route path="/:productTitle">
+          <Route path="/:productTitle" exact>
             <ProductDetail />
+          </Route>
+          <Route path='*'>
+          <Redirect to="/"/>
           </Route>
         </Switch>
       </RootLayout>
-    </CartProvider>
   );
 }
 

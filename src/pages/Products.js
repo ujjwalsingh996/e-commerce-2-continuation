@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Card, Button, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 import "./Products.css";
@@ -73,11 +73,18 @@ const Products = (props) => {
     // }
     authCtx.addEmail(emailid);
     // console.log(emailid)
-    axios.post(`https://crudcrud.com/api/475b7d50b2264b1c93408a61df2770a7/cart${emailid}`, prod).then((res) => {console.log(res)})
+    axios.post(`https://crudcrud.com/api/89ff5a1936e643c088a7b1157c2a10c2/cart${emailid}`, prod).then((res) => {console.log(res)})
   };
+
+  const logoutHandler = () => {
+    authCtx.logout()
+  }
   return (
     <React.Fragment>
       {/* <Cart items={cartCtx.items} show={show} handleClose={handleClose}>{props.children}</Cart> */}
+      <Button className="primary" onClick={logoutHandler}>
+      Logut
+      </Button>
 
       {productsArr.map((prod) => (
         
