@@ -8,7 +8,8 @@ import axios from "axios";
 const RootLayout = (props) => {
   const [show, setShow] = useState(false);
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [refresh, setRefresh] = useState([])
+   const [isLoading, setIsLoading] = useState(true);
   const handleClose = () => setShow(false);
   const cartCtx = useContext(CartContext);
   const handleShow = () => setShow(true);
@@ -19,7 +20,7 @@ const RootLayout = (props) => {
     setIsLoading(true);
     axios
       .get(
-        `https://crudcrud.com/api/89ff5a1936e643c088a7b1157c2a10c2/cart${emailid}`
+        `https://crudcrud.com/api/e93aad01582244cfa7224a67fc295339/cart${emailid}`
       )
       .then((res) => {
         setData(res.data);
@@ -36,6 +37,29 @@ const RootLayout = (props) => {
     getData();
   }, [cartCtx.items, getData, show]);
 
+  useEffect(()=> {
+    const getCart = async() => {
+      const response = await axios.get(`https://crudcrud.com/api/e93aad01582244cfa7224a67fc295339/cart${emailid}`)
+      setRefresh(response.data)
+      setData(response.data)
+      console.log(response.data)
+    }
+
+    getCart()
+  }, [])
+
+  const logoutHandler = () => {
+    authCtx.logout();
+    setData([])
+    setRefresh([])
+    for(var i=0;i<data.length; i++ )
+    {
+      let id = data[i]._id
+      axios.delete(`https://crudcrud.com/api/e93aad01582244cfa7224a67fc295339/cart${emailid}/${id}`)
+    }
+    
+  };
+
   return (
     <React.Fragment>
       <Navbar bg="dark" expand="lg" variant="dark">
@@ -46,8 +70,11 @@ const RootLayout = (props) => {
           <Navbar.Brand href="/login">Login</Navbar.Brand>
           <Navbar.Brand href="/contact">Contact us</Navbar.Brand>
           <Button variant="primary" onClick={handleShow}>
-            Cart ({cartCtx.items.length})
+            Cart ({data.length})
           </Button>
+          <Button className="primary" onClick={logoutHandler}>
+        Logut
+      </Button>
         </Container>
       </Navbar>
       <Cart

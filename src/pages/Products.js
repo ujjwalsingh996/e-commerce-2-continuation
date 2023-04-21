@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Card, Button, Container } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 import "./Products.css";
@@ -9,7 +9,6 @@ import AuthContext from "../components/store/auth-context";
 
 const productsArr = [
   {
-  
     title: "Colors",
 
     price: 100,
@@ -18,7 +17,6 @@ const productsArr = [
   },
 
   {
-    
     title: "Black and white Colors",
 
     price: 50,
@@ -35,7 +33,6 @@ const productsArr = [
   },
 
   {
-
     title: "Blue Color",
 
     price: 100,
@@ -47,23 +44,21 @@ const productsArr = [
 const Products = (props) => {
   const cartCtx = useContext(CartContext);
   const authCtx = useContext(AuthContext);
+  // const [data, setData] = useState([]);
   const email = authCtx.email;
-  let emailid = ''
-  for(var i = 0;i< email.length; i++)
-  {
-    if(email[i] === '@')
-    {
+  let emailid = "";
+  for (var i = 0; i < email.length; i++) {
+    if (email[i] === "@") {
       continue;
     }
-    if(email[i] === '.')
-    {
+    if (email[i] === ".") {
       continue;
     }
-    emailid = emailid + email[i]
+    emailid = emailid + email[i];
   }
-  
+
   const addToCartHandler = (prod) => {
-    console.log('Adding item', prod)
+    console.log("Adding item", prod);
     cartCtx.addItem(prod);
     // let obj =
     // {
@@ -73,45 +68,42 @@ const Products = (props) => {
     // }
     authCtx.addEmail(emailid);
     // console.log(emailid)
-    axios.post(`https://crudcrud.com/api/89ff5a1936e643c088a7b1157c2a10c2/cart${emailid}`, prod).then((res) => {console.log(res)})
+    axios
+      .post(
+        `https://crudcrud.com/api/e93aad01582244cfa7224a67fc295339/cart${emailid}`,
+        prod
+      )
+      .then((res) => {
+        console.log(res);
+      });
+    // setData(prod);
   };
 
-  const logoutHandler = () => {
-    authCtx.logout()
-  }
   return (
     <React.Fragment>
-      {/* <Cart items={cartCtx.items} show={show} handleClose={handleClose}>{props.children}</Cart> */}
-      <Button className="primary" onClick={logoutHandler}>
-      Logut
-      </Button>
-
       {productsArr.map((prod) => (
-        
-          <Container key={prod.title} className="products">
-            <Card className="mt-3" style={{ width: "18rem" }}>
-              <Card.Img variant="top" src={prod.imageUrl} />
-              <Card.Body>
+        <Container key={prod.title} className="products">
+          <Card className="mt-3" style={{ width: "18rem" }}>
+            <Card.Img variant="top" src={prod.imageUrl} />
+            <Card.Body>
               <Link to={prod.title}>
                 <Card.Title>Album</Card.Title>
-                </Link>
-                <Card.Subtitle className="mb-2 text-muted">
-                  Rs {prod.price}
-                </Card.Subtitle>
-                <Card.Text>{prod.title}</Card.Text>
-                <Button
-                  onClick={() => {addToCartHandler(prod)
-                  }
-                }
-                  variant="primary"
-                >
-                  Add to Cart
-                </Button> 
-              </Card.Body>
-            </Card>
-          </Container>
-          
-        
+              </Link>
+              <Card.Subtitle className="mb-2 text-muted">
+                Rs {prod.price}
+              </Card.Subtitle>
+              <Card.Text>{prod.title}</Card.Text>
+              <Button
+                onClick={() => {
+                  addToCartHandler(prod);
+                }}
+                variant="primary"
+              >
+                Add to Cart
+              </Button>
+            </Card.Body>
+          </Card>
+        </Container>
       ))}
     </React.Fragment>
   );
