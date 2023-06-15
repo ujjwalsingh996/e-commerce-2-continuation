@@ -16,7 +16,7 @@ const Cart = (props) => {
   const removeItemHandler = async(prod, title) => {
     cartCtx.removeItem(title);
     const res = await axios.delete(
-      `https://crudcrud.com/api/e93aad01582244cfa7224a67fc295339/cart${emailid}/${prod}`
+      `https://crudcrud.com/api/31ca41ab6e544aa3a25855198412ff11/cart${emailid}/${prod}`
     );
     console.log(res)
     props.getData();

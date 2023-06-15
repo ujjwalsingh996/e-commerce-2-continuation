@@ -20,7 +20,7 @@ const RootLayout = (props) => {
     setIsLoading(true);
     axios
       .get(
-        `https://crudcrud.com/api/e93aad01582244cfa7224a67fc295339/cart${emailid}`
+        `https://crudcrud.com/api/31ca41ab6e544aa3a25855198412ff11/cart${emailid}`
       )
       .then((res) => {
         setData(res.data);
@@ -39,7 +39,7 @@ const RootLayout = (props) => {
 
   useEffect(()=> {
     const getCart = async() => {
-      const response = await axios.get(`https://crudcrud.com/api/e93aad01582244cfa7224a67fc295339/cart${emailid}`)
+      const response = await axios.get(`https://crudcrud.com/api/31ca41ab6e544aa3a25855198412ff11/cart${emailid}`)
       setRefresh(response.data)
       setData(response.data)
       console.log(response.data)
@@ -55,7 +55,7 @@ const RootLayout = (props) => {
     for(var i=0;i<data.length; i++ )
     {
       let id = data[i]._id
-      axios.delete(`https://crudcrud.com/api/e93aad01582244cfa7224a67fc295339/cart${emailid}/${id}`)
+      axios.delete(`https://crudcrud.com/api/31ca41ab6e544aa3a25855198412ff11/cart${emailid}/${id}`)
     }
     
   };
